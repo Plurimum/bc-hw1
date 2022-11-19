@@ -1,5 +1,6 @@
-# bc-hw1
-# 1
+# Курс “Блокчейн” |  Д/З №1
+# Задание 1.1
+сделать, чтобы с баланса multisig-контракта за одну транзакцию не могло бы уйти больше, чем 66 ETH
 
 ```solidity
 @@ -22,6 +22,7 @@ contract MultiSigWallet {
@@ -30,4 +31,37 @@
          returns (uint transactionId)
      {
          transactionId = addTransaction(destination, value, data);
+```
+
+# Задание 1.2
+сделать, чтобы токен не мог бы быть transferred по субботам
+
+```solidity 
+@@ -52,7 +52,12 @@ contract ERC20 is Context, IERC20 {
+         _name = name_;
+         _symbol = symbol_;
+     }
+-
++    
++    modifier itIsNotSaturday {
++        require((now / (1 days) - 2) % 7 != 0);
++        _;
++    }
++    
+     /**
+      * @dev Returns the name of the token.
+      */
+@@ -205,7 +210,10 @@ contract ERC20 is Context, IERC20 {
+      * - `recipient` cannot be the zero address.
+      * - `sender` must have a balance of at least `amount`.
+      */
+-    function _transfer(address sender, address recipient, uint256 amount) internal virtual {
++    function _transfer(address sender, address recipient, uint256 amount) 
++        internal virtual 
++        itIsNotSaturday
++    {
+         require(sender != address(0), "ERC20: transfer from the zero address");
+         require(recipient != address(0), "ERC20: transfer to the zero address");
+ 
+
 ```
