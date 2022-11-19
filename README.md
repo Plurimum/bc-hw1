@@ -1,6 +1,6 @@
 # Курс “Блокчейн” |  Д/З №1
 # Задание 1.1
-сделать, чтобы с баланса multisig-контракта за одну транзакцию не могло бы уйти больше, чем 66 ETH
+Сделать, чтобы с баланса multisig-контракта за одну транзакцию не могло бы уйти больше, чем 66 ETH
 
 ```solidity
 @@ -22,6 +22,7 @@ contract MultiSigWallet {
@@ -34,7 +34,7 @@
 ```
 
 # Задание 1.2
-сделать, чтобы токен не мог бы быть transferred по субботам
+Сделать, чтобы токен не мог бы быть transferred по субботам
 
 ```solidity 
 @@ -52,7 +52,12 @@ contract ERC20 is Context, IERC20 {
@@ -63,5 +63,21 @@
          require(sender != address(0), "ERC20: transfer from the zero address");
          require(recipient != address(0), "ERC20: transfer to the zero address");
  
+
+```
+
+# Задание 1.3
+Сделать чтобы платеж в ETH принимался только специальной функцией, принимающей помимо ETH еще комментарий к платежу (bytes[32]). Простая отправка ETH в контракт запрещена
+
+```solidity 
+@@ -37,7 +37,7 @@ contract DividendToken is StandardToken, Ownable {
+         }));
+     }
+ 
+-    function() external payable {
++    function(bytes[32] comment) external payable {
+         if (msg.value > 0) {
+             emit Deposit(msg.sender, msg.value);
+             m_totalDividends = m_totalDividends.add(msg.value);
 
 ```
